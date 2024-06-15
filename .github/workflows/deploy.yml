@@ -25,3 +25,4 @@ jobs:
       run: node deploy.js
       env:
         APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
+        APPWRITE_PROJECT_ID: '666de56d00361079f322'

@@ -1,30 +1,25 @@
 const sdk = require('node-appwrite');
 
+// Init SDK
+let client = new sdk.Client();
+
+client
+    .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
+    .setProject(process.env.APPWRITE_PROJECT_ID) // Your project ID
+    .setKey(process.env.APPWRITE_API_KEY); // Your secret API key
+
+let databases = new sdk.Databases(client);
+
 module.exports = async function (req, res) {
-    const client = new sdk.Client();
+    // Your function logic here
 
-    // Set up Appwrite client
-    client
-        .setEndpoint(process.env.APPWRITE_ENDPOINT) // Your Appwrite endpoint
-        .setProject(process.env.APPWRITE_PROJECT_ID) // Your project ID
-        .setKey(process.env.APPWRITE_API_KEY); // Your API key
-
-    const database = new sdk.Database(client);
-
-    // Get the voucher code from the request
-    const voucherCode = req.body.voucher_code;
-
+    // Example: Fetch a document from a collection
     try {
-        const vouchers = await database.listDocuments('YOUR_DATABASE_ID', 'YOUR_COLLECTION_ID', [
-            sdk.Query.equal('code', voucherCode),
-        ]);
-
-        if (vouchers.documents.length > 0 && vouchers.documents[0].valid) {
-            res.json({ success: true, redirectUrl: 'https://success-page-url' });
-        } else {
-            res.json({ success: false });
-        }
+        let result = await databases.getDocument('collectionId', 'documentId');
+        console.log(result);
+        res.json(result);
     } catch (error) {
-        res.json({ success: false, error: error.message });
+        console.error(error);
+        res.status(500).send(error);
     }
 };
