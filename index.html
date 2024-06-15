@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omada Voucher Portal</title>
+</head>
+<body>
+    <h1>Omada Voucher Login</h1>
+    <form id="voucherForm">
+        <label for="voucher">Voucher Code:</label>
+        <input type="text" id="voucher" name="voucher" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('voucherForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const voucher = document.getElementById('voucher').value;
+            const response = await fetch('https://cloud.appwrite.io/v1/functions/YOUR_FUNCTION_ID/executions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Appwrite-Project': '666de56d00361079f322',
+                    'X-Appwrite-Key': 'bc7a7f1f865af269f21d10de98fd26c7581d77574b38e847678c804b4f604419a1d1bdb17c2033ca97d02555f58fbf2b11fcdbac0c5ea28d704b62e117bd45d496aa913a5ba7d91944247d85a95d59c3faca220dff7367bb60a0570f6401ae5be2b3e13f30d22263b21757cabf9016eba86b540a16a072f956d99475dc92fca7',
+                },
+                body: JSON.stringify({ voucher_code: voucher })
+            });
+            const result = await response.json();
+            const messageDiv = document.getElementById('message');
+            if (result.success) {
+                window.location.href = result.redirectUrl;
+            } else {
+                messageDiv.textContent = 'Invalid voucher code. Please try again.';
+            }
+        });
+    </script>
+</body>
+</html>
