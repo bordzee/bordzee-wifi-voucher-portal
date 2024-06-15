@@ -21,11 +21,7 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Install Appwrite CLI
-      run: npm install -g appwrite
-
-    - name: Deploy to Appwrite
-      run: |
-        appwrite functions createExecution --functionId 666deb45001a4115445e --projectId 666de56d00361079f322 --endpoint 'https://cloud.appwrite.io/v1' --key ${{ secrets.APPWRITE_API_KEY }}
+    - name: Run deployment script
+      run: node deploy.js
       env:
         APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
